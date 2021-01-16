@@ -18,8 +18,8 @@
         ],
         "operationId": "hello",
         "responses": {
-          "default": {
-            "description": "default response",
+          "200": {
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {

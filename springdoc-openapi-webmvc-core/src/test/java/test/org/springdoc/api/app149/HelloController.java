@@ -33,7 +33,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class HelloController {
 
 	@GetMapping("/hello")
-	@Operation(responses = @ApiResponse(content = @Content(schema = @Schema(implementation = HelloMessage.class))))
+	@Operation(responses = @ApiResponse(
+			responseCode = "200",
+			description = "OK",
+			content = @Content(schema = @Schema(implementation = HelloMessage.class))
+	))
 	public String hello() {
 		return "forward:/message";
 	}
