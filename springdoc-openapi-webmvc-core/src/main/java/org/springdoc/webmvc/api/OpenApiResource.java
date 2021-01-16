@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.PathUtils;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.AbstractRequestService;
@@ -278,8 +279,11 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 		ResponseBody responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), ResponseBody.class);
 		if (responseBodyAnnotation == null)
 			responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), ResponseBody.class);
+		Operation operationAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), Operation.class);
 
-		return (responseBodyAnnotation != null && restControllers.containsKey(handlerMethod.getBean().toString()) || isAdditionalRestController(handlerMethod.getBeanType()))
+		return (responseBodyAnnotation != null && restControllers.containsKey(handlerMethod.getBean().toString())
+				|| isAdditionalRestController(handlerMethod.getBeanType())
+				|| operationAnnotation != null)
 				&& operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
 				&& (springDocConfigProperties.isModelAndViewAllowed() || !ModelAndView.class.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
 	}
