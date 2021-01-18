@@ -241,8 +241,10 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 					String[] produces = requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
 					String[] consumes = requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
 					String[] headers = requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
+					Operation operationAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), Operation.class);
 					if (((isShowActuator() && optionalActuatorProvider.get().isRestController(operationPath, handlerMethod.getBeanType()))
-							|| isRestController(restControllers, handlerMethod, operationPath))
+							|| isRestController(restControllers, handlerMethod, operationPath)
+							|| operationAnnotation != null)
 							&& isFilterCondition(handlerMethod, operationPath, produces, consumes, headers)) {
 						Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 						// default allowed requestmethods
@@ -279,11 +281,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 		ResponseBody responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), ResponseBody.class);
 		if (responseBodyAnnotation == null)
 			responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), ResponseBody.class);
-		Operation operationAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), Operation.class);
 
-		return (responseBodyAnnotation != null && restControllers.containsKey(handlerMethod.getBean().toString())
-				|| isAdditionalRestController(handlerMethod.getBeanType())
-				|| operationAnnotation != null)
+		return (responseBodyAnnotation != null && restControllers.containsKey(handlerMethod.getBean().toString()) || isAdditionalRestController(handlerMethod.getBeanType()))
 				&& operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
 				&& (springDocConfigProperties.isModelAndViewAllowed() || !ModelAndView.class.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
 	}

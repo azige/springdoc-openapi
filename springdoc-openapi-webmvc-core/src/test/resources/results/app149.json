@@ -50,6 +50,26 @@
           }
         }
       }
+    },
+    "/helloModelAndView": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "helloModelAndView",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HelloMessage"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {

@@ -18,12 +18,21 @@
 
 package test.org.springdoc.api.app149;
 
+import org.junit.jupiter.api.Test;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 public class SpringDocApp149Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
+
+	@Test
+	public void helloModelAndViewShouldBeForwarded() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/helloModelAndView"))
+				.andExpect(MockMvcResultMatchers.forwardedUrl("/message"));
+	}
 }

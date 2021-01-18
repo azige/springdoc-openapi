@@ -28,6 +28,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HelloController {
@@ -47,5 +48,17 @@ public class HelloController {
 	@ResponseBody
 	public HelloMessage message() {
 		return new HelloMessage("Lucky numbers!", 777);
+	}
+
+	@GetMapping("/helloModelAndView")
+	@Operation(responses = @ApiResponse(
+			responseCode = "200",
+			description = "OK",
+			content = @Content(schema = @Schema(implementation = HelloMessage.class))
+	))
+	public ModelAndView helloModelAndView() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("forward:/message");
+		return mav;
 	}
 }
