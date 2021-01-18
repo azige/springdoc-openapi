@@ -30,6 +30,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * To test the case a user does not use @RestController but puts @Operation on handler methods
+ * and wants these methods to be exposed.
+ *
+ * @author Azige
+ */
 @Controller
 public class HelloController {
 
